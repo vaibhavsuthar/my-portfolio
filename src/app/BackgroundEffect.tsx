@@ -23,29 +23,26 @@ function createStar(cx: number, cy: number, w: number, h: number) {
   const color = `hsla(${randomBetween(180, 260)}, 100%, ${randomBetween(80, 100)}%, ${randomBetween(0.5, 1)})`;
   return { x, y, size, color, angle: spiral, radius, arm };
 }
-
 export default function BackgroundEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<any[]>([]);
   const animationRef = useRef<number>(0);
   const rotationRef = useRef(0);
 
- useEffect(() => {
-  const canvas = canvasRef.current;
+  useEffect(() => {
+    function resize() {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    }
+    resize();
+    window.addEventListener("resize", resize);
 
-  function resize() {
-    if (!canvas) return; // ✅ Yeh bilkul sahi hai
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  resize();
-}, []);
-
-
-    // Generate stars
     function generateStars() {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
       starsRef.current = Array.from({ length: STAR_COUNT }, () => createStar(cx, cy, canvas.width, canvas.height));
@@ -61,6 +58,10 @@ export default function BackgroundEffect() {
     });
 
     function draw() {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Galaxy core glow
       const cx = canvas.width / 2;
