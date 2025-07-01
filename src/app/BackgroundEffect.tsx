@@ -30,18 +30,19 @@ export default function BackgroundEffect() {
   const animationRef = useRef<number>(0);
   const rotationRef = useRef(0);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+ useEffect(() => {
+  const canvas = canvasRef.current;
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener("resize", resize);
+  function resize() {
+    if (!canvas) return; // ✅ Yeh bilkul sahi hai
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resize();
+}, []);
+
 
     // Generate stars
     function generateStars() {
