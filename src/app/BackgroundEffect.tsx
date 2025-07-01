@@ -27,7 +27,7 @@ function createStar(cx: number, cy: number, w: number, h: number) {
 export default function BackgroundEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<any[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
   const rotationRef = useRef(0);
 
   useEffect(() => {
